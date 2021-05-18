@@ -1,8 +1,9 @@
 package main
 
 import (
-	"dataStruct"
 	"fmt"
+
+	"dataStruct"
 )
 
 func main() {
