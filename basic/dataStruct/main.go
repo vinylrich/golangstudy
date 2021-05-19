@@ -14,7 +14,7 @@ func main() {
 	}
 	list.PrintNodes()
 
-	list.RemoveNode(list.root.next)
+	list.RemoveNode(list.Root.Next)
 
 	list.PrintNodes()
 

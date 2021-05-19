@@ -3,51 +3,51 @@ package dataStruct
 import "fmt"
 
 type Node struct {
-	next *Node
-	prev *Node
-	val  int
+	Next *Node
+	Prev *Node
+	Val  int
 }
 type LinkedList struct {
 	Root *Node
 	Tail *Node
 }
 
-func (l *LinkedList) AddNode(val int) {
+func (l *LinkedList) AddNode(Val int) {
 	if l.Root == nil {
-		l.Root = &Node{val: val}
+		l.Root = &Node{Val: Val}
 		l.Tail = l.Root
 		return
 	}
-	l.Tail.next = &Node{val: val}
-	prev := l.Tail
-	l.Tail = l.Tail.next
-	l.Tail.prev = prev
+	l.Tail.Next = &Node{Val: Val}
+	Prev := l.Tail
+	l.Tail = l.Tail.Next
+	l.Tail.Prev = Prev
 }
 
 func (l *LinkedList) RemoveNode(node *Node) {
 	if node == l.Root {
-		l.Root = l.Root.next
-		l.Root.prev = nil
+		l.Root = l.Root.Next
+		l.Root.Prev = nil
 		if l.Root == nil {
 			l.Tail = nil
 		}
 		return
 	}
-	prev := node.prev
+	Prev := node.Prev
 
 	if node == l.Tail {
-		prev.next = nil
-		l.Tail.prev = nil
-		l.Tail = prev
+		Prev.Next = nil
+		l.Tail.Prev = nil
+		l.Tail = Prev
 	} else {
-		prev.next = prev.next.next
+		Prev.Next = Prev.Next.Next
 	}
 }
 func (l *LinkedList) PrintNodes() {
 	node := l.Root
-	for node.next != nil {
-		fmt.Printf("%d -> ", node.val)
-		node = node.next
+	for node.Next != nil {
+		fmt.Printf("%d -> ", node.Val)
+		node = node.Next
 	}
 	fmt.Println()
 }
@@ -55,9 +55,9 @@ func (l *LinkedList) PrintNodes() {
 func (l *LinkedList) PrintReverse() {
 	fmt.Println("접근")
 	node := l.Tail
-	for node.prev != nil {
-		fmt.Printf("%d -> ", node.val)
-		node = node.prev
+	for node.Prev != nil {
+		fmt.Printf("%d -> ", node.Val)
+		node = node.Prev
 	}
 	fmt.Println()
 }
