@@ -15,6 +15,4 @@ func f1(x int) {
 		f1(i) //f1(2)
 	}
 
-	if i == x 
-	
 }
