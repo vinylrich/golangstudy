@@ -6,52 +6,26 @@ import (
 )
 
 func main() {
-	stack := []int{}
+	tree := dataStruct.Tree{}
 
-	for i := 1; i <= 5; i++ {
-		stack = append(stack, i)
+	val := 1
+	tree.AddNode(val)
+	val++
+
+	for i := 0; i < 3; i++ {
+		tree.Root.AddNode(val)
+		val++
 	}
 
-	fmt.Println(stack)
-
-	for len(stack) > 0 {
-		var last int
-		last, stack = stack[len(stack)-1], stack[:len(stack)-1]
-		fmt.Println(last)
+	for i := 0; i < len(tree.Root.Childs); i++ {
+		for j := 0; j < 2; j++ {
+			tree.Root.Childs[i].AddNode(val)
+			val++
+		}
 	}
 
-	queue := []int{}
-	for i := 1; i <= 5; i++ {
-		queue = append(queue, i)
-	}
+	tree.DFS1()
+	fmt.Println()
 
-	fmt.Println(queue)
-
-	for len(queue) > 0 {
-		var front int
-		front, queue = queue[0], queue[1:]
-		fmt.Println(front)
-	}
-
-	stack2 := dataStruct.NewStack()
-
-	for i := 1; i <= 5; i++ {
-		stack2.Push(i)
-	}
-
-	for !stack2.Empty() {
-		val := stack2.Pop()
-		fmt.Printf("%d->", val)
-	}
-	fmt.Println("\nNewStack")
-
-	queue2 := dataStruct.NewQueue()
-	for i := 1; i <= 5; i++ {
-		queue2.Push(i)
-	}
-	fmt.Println("\nNewQueue")
-
+	tree.DFS2()
 }
-
-//어디에 사용하느냐?
-//
