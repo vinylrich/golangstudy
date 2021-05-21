@@ -47,6 +47,20 @@ func (t *Tree) DFS2() {
 	}
 }
 
+func (t *Tree) BFS() {
+	queue := []*TreeNode{}
+	queue = append(queue, t.Root)
+
+	for len(queue) > 0 {
+		var first *TreeNode
+		first, queue = queue[0], queue[1:]
+		fmt.Printf("%d->", first.Val)
+		for i := 0; i < len(first.Childs); i++ {
+			queue = append(queue, first.Childs[i])
+		}
+	}
+}
+
 //BFS DFS
 //너비우선 깊이우선
 //깊이우선은 맨 아래부터 탐색->부모->부모의다른자식->올라감

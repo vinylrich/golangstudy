@@ -97,3 +97,8 @@ func (l *LinkedList) PrintReverse() {
 	}
 	fmt.Printf("%d\n", node.Val)
 }
+
+//코딩을 한다
+//취업을 한다->계속 생각한다->다른것도 생각한다
+//시간관리 진짜 잘하자!
+//계속 공부해야한다

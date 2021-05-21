@@ -6,26 +6,21 @@ import (
 )
 
 func main() {
-	tree := dataStruct.Tree{}
+	tree := dataStruct.NewBinaryTree(5)
+	tree.Root.AddNode(3)
+	tree.Root.AddNode(2)
+	tree.Root.AddNode(4)
+	tree.Root.AddNode(8)
+	tree.Root.AddNode(7)
+	tree.Root.AddNode(6)
+	tree.Root.AddNode(10)
+	tree.Root.AddNode(9)
 
-	val := 1
-	tree.AddNode(val)
-	val++
-
-	for i := 0; i < 3; i++ {
-		tree.Root.AddNode(val)
-		val++
+	tree.PrintTree()
+	val := 6
+	if found, cnt := tree.Search(val); found {
+		fmt.Println("found ", val, "count:", cnt)
+	} else {
+		fmt.Println("Not Found", val, "count:", cnt)
 	}
-
-	for i := 0; i < len(tree.Root.Childs); i++ {
-		for j := 0; j < 2; j++ {
-			tree.Root.Childs[i].AddNode(val)
-			val++
-		}
-	}
-
-	tree.DFS1()
-	fmt.Println()
-
-	tree.DFS2()
 }
