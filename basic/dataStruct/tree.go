@@ -36,14 +36,19 @@ func (t *Tree) DFS2() {
 	s := []*TreeNode{}
 	s = append(s, t.Root)
 
+	//1,2,3,4,5,6,7,8,9,10
 	for len(s) > 0 {
 		var last *TreeNode
-		last, s = s[len(s)-1], s[0:len(s)-1]
+		last, s = s[len(s)-1], s[0:len(s)-1] //last가 2,3,4
+		// last, s = s[0], s[1:] //last가 3,2,10,9
+		//last=4
+		fmt.Printf("%d->", last.Val) //1
 
-		fmt.Printf("%d->", last.Val)
+		//len(last.Child)=4,3,2
 		for i := len(last.Childs) - 1; i >= 0; i-- {
-			s = append(s, last.Childs[i])
-		}
+			fmt.Print(last.Childs[i].Val)
+			s = append(s, last.Childs[i]) //인덱스 2부터
+		} //s=4,3,2
 	}
 }
 
@@ -54,7 +59,7 @@ func (t *Tree) BFS() {
 	for len(queue) > 0 {
 		var first *TreeNode
 		first, queue = queue[0], queue[1:]
-		fmt.Printf("%d->", first.Val)
+		fmt.Printf("%d->", first.Val) //찾기
 		for i := 0; i < len(first.Childs); i++ {
 			queue = append(queue, first.Childs[i])
 		}
