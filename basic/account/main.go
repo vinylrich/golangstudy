@@ -19,14 +19,10 @@ func (a *Account) Widthdraw(val int) {
 }
 
 func (a *Account) Deposit(val int) {
-	a.mutex.Lock()
 	a.balance += val //a.balance=a.balance-val
-	a.mutex.Unlock()
 	//RegA RegB
 }
 func (a *Account) Balance() int {
-	a.mutex.Lock()
-	defer a.mutex.Unlock()
 	return a.balance
 }
 
