@@ -19,7 +19,9 @@ func (a *Account) Widthdraw(val int) {
 }
 
 func (a *Account) Deposit(val int) {
+	a.mutex.Lock()
 	a.balance += val //a.balance=a.balance-val
+	a.mutex.Unlock()
 	//RegA RegB
 }
 func (a *Account) Balance() int {
@@ -27,22 +29,24 @@ func (a *Account) Balance() int {
 }
 
 var accounts []*Account
-var globalLock *sync.Mutex
 
 func Transfer(sender, receiver, money int) {
-	globalLock.Lock()
+
+	time.Sleep(100 * time.Millisecond)
+
 	accounts[sender].Widthdraw(money) //빼고 난 다음에 넣어서 오류 발생
 	accounts[receiver].Deposit(money)
-	globalLock.Unlock()
+	fmt.Println("Transfer", sender, receiver, money)
+
 }
 
 func GetTotalBalance() int {
-	globalLock.Lock()
+
 	total := 0
 	for i := 0; i < len(accounts); i++ {
 		total += accounts[i].Balance()
 	}
-	globalLock.Unlock()
+
 	return total
 }
 
@@ -82,12 +86,17 @@ func main() {
 	for i := 0; i < 20; i++ {
 		accounts = append(accounts, &Account{balance: 1000, mutex: &sync.Mutex{}})
 	}
-	PrintTotalBalance()
-	for i := 0; i < 10; i++ {
-		go GoTransfer() //10개의 GoThread에 infinity loof
-	}
+	go func() {
+		for {
+			Transfer(0, 1, 100)
+		}
+	}()
+	go func() {
+		for {
+			Transfer(1, 0, 100)
+		}
+	}()
 	for {
-		PrintTotalBalance()
 		time.Sleep(100 * time.Millisecond)
 	}
 }

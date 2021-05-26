@@ -39,14 +39,13 @@ func (t *Tree) DFS2() {
 	//1,2,3,4,5,6,7,8,9,10
 	for len(s) > 0 {
 		var last *TreeNode
-		last, s = s[len(s)-1], s[0:len(s)-1] //last가 2,3,4
+		last, s = s[len(s)-1], s[0:len(s)-1] //last가 4,3,10,9
 		// last, s = s[0], s[1:] //last가 3,2,10,9
 		//last=4
 		fmt.Printf("%d->", last.Val) //1
 
 		//len(last.Child)=4,3,2
 		for i := len(last.Childs) - 1; i >= 0; i-- {
-			fmt.Print(last.Childs[i].Val)
 			s = append(s, last.Childs[i]) //인덱스 2부터
 		} //s=4,3,2
 	}

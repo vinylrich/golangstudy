@@ -37,16 +37,15 @@ func (l *LinkedList) PopBack() {
 	}
 	l.RemoveNode(l.Tail)
 }
+func (l *LinkedList) Empty() bool {
+	return l.Root == nil
+}
 
 func (l *LinkedList) Front() int {
 	if l.Root != nil {
 		return l.Root.Val
 	}
 	return 0
-}
-
-func (l *LinkedList) Empty() bool {
-	return l.Root == nil
 }
 
 func (l *LinkedList) PopFront() {
@@ -57,6 +56,9 @@ func (l *LinkedList) PopFront() {
 }
 
 func (l *LinkedList) RemoveNode(node *Node) {
+	if node == nil {
+		panic("지우려고 하는 node가 없습니다!")
+	}
 	if node == l.Root {
 		l.Root = l.Root.Next
 		if l.Root != nil {

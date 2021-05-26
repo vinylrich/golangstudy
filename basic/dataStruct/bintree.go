@@ -10,6 +10,7 @@ type BinTreeNode struct {
 	Right *BinTreeNode //right>=parent
 }
 
+//why heap?
 type BinTree struct {
 	Root *BinTreeNode
 }
@@ -19,11 +20,12 @@ func NewBinaryTree(v int) *BinTree {
 	tree.Root = &BinTreeNode{Val: v}
 	return tree
 }
+
 func (n *BinTreeNode) AddNode(v int) *BinTreeNode {
-	if n.Val > v {
+	if n.Val > v { //Root=5,v=9
 		if n.Left == nil {
 			n.Left = &BinTreeNode{Val: v}
-			return n.Left
+			return n.Left //
 		} else {
 			return n.Left.AddNode(v)
 		}
@@ -70,6 +72,7 @@ func (t *BinTree) Search(v int) (bool, int) {
 	return t.Root.Search(v, 1)
 }
 
+//BinTree의 root.val에 접근하기 위해서 binTreeNode의 Search로 접근
 func (n *BinTreeNode) Search(v int, cnt int) (bool, int) {
 	if n.Val == v {
 		return true, cnt
@@ -86,3 +89,5 @@ func (n *BinTreeNode) Search(v int, cnt int) (bool, int) {
 	}
 
 }
+
+//AVL TREE 구현해보기
