@@ -5,6 +5,7 @@ import "fmt"
 func main() {
 	var s []int
 	var t []int
+
 	s = make([]int, 3)
 
 	s[0] = 100
