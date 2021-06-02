@@ -33,5 +33,5 @@ func uploadHandler(w http.ResponseWriter, r *http.Request) {
 func main() {
 	http.Handle("/", http.FileServer(http.Dir("public")))
 	http.HandleFunc("/upload", uploadHandler)
-	http.ListenAndServe(":3000", nil)
+	http.ListenAndServe(":3002", nil)
 }

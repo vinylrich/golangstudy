@@ -177,7 +177,6 @@ func NewHandler() http.Handler {
 	mux.HandleFunc("/users", createUserHandler).Methods("POST")
 	mux.HandleFunc("/users", updateUserHandler).Methods("PUT")
 	mux.HandleFunc("/users/{id:[0-9]+}", getUsersInfoHandler).Methods("GET")
-	mux.HandleFunc("/users/{id:[0-9]+}", deleteUserHandler).Methods("DELETE")
 
 	// mux.HandleFunc("/users", deleteUserHandler).Methods("DELETE")
 	return mux
