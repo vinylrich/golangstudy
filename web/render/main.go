@@ -43,11 +43,13 @@ func main() {
 		Directory:  "templates",
 		Extensions: []string{".html", ".tmpl"},
 	})
+	//mux:=http.NewServMux ->put,delete가 없음
+	//mux:=mux.NewRouter ->.Methods 함수 사용
+	//성능은 모르겠지만 pat is simple Routing.
 	mux := pat.New()
 	mux.Get("/users", getUserInfoHandler)
 	mux.Post("/users", addUserHandler)
 	mux.Get("/hello", helloHandler)
-
 	n := negroni.Classic()
 	n.UseHandler(mux)
 	http.ListenAndServe(":3000", n)
