@@ -7,6 +7,7 @@ import (
 	"net/http"
 	"net/http/httptest"
 	"net/url"
+	"os"
 	"strconv"
 	"testing"
 
@@ -14,8 +15,12 @@ import (
 )
 
 func TestTodos(t *testing.T) {
+	filepath := "./test.db"
+	os.Remove(filepath)
 	assert := assert.New(t)
-	ts := httptest.NewServer(MakeHandler())
+	ah := MakeHandler(filepath)
+	defer ah.Close()
+	ts := httptest.NewServer(ah)
 	defer ts.Close()
 	res, err := http.PostForm(ts.URL+"/todos", url.Values{"name": {"Test todo"}})
 	assert.NoError(err)
@@ -42,7 +47,7 @@ func TestTodos(t *testing.T) {
 	todos := []*model.Todo{}
 	err = json.NewDecoder(res.Body).Decode(&todos)
 	assert.NoError(err)
-	assert.Equal(len(todos), 2)
+	assert.Equal(2, len(todos))
 
 	//for each 구문은 앞에가 key 또는 index
 	//뒤에가 value
@@ -66,7 +71,7 @@ func TestTodos(t *testing.T) {
 	todos = []*model.Todo{}
 	err = json.NewDecoder(res.Body).Decode(&todos)
 	assert.NoError(err)
-	assert.Equal(len(todos), 2)
+	assert.Equal(2, len(todos))
 
 	for _, t := range todos {
 		if t.ID == id1 {
@@ -86,7 +91,7 @@ func TestTodos(t *testing.T) {
 	todos = []*model.Todo{}
 	err = json.NewDecoder(res.Body).Decode(&todos)
 	assert.NoError(err)
-	assert.Equal(len(todos), 1)
+	assert.Equal(1, len(todos))
 
 	//for each 구문은 앞에가 key 또는 index
 	//뒤에가 value

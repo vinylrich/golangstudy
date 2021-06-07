@@ -12,6 +12,7 @@ ms-complier가 있긴 하지만
 그래서 mingw라는 녀석이 필요하다.
 ms-complier를 mingw로 필터링하고,
 cgo패키지를 사용 할 수 있다.*/
+var handler DBHandler
 
 //Todo struct
 type Todo struct {
@@ -20,22 +21,14 @@ type Todo struct {
 	Completed bool      `json:"completed"`
 	CreatedAt time.Time `json:"created_at"`
 }
-
-func init() {
-	// handler = newMemoryHandler()
-	handler = newSqliteHandler()
-}
-func GetTodos() []*Todo {
-	return handler.getTodos()
-}
-
-func AddTodo(name string) *Todo {
-	return handler.addTodo(name)
+type DBHandler interface {
+	GetTodos() []*Todo
+	AddTodo(name string) *Todo
+	RemoveTodo(id int) bool
+	CompleteTodo(id int, complete bool) bool
+	Close()
 }
 
-func RemoveTodo(id int) bool {
-	return handler.removeTodo(id)
-}
-func CompleteTodo(id int, complete bool) bool {
-	return handler.completeTodo(id, complete)
+func NewDBHandler(filepath string) DBHandler {
+	return newSqliteHandler(filepath)
 }

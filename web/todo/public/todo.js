@@ -13,7 +13,7 @@
             //todoListItem.append("<li><div class='form-check'><label class='form-check-label'><input class='checkbox' type='checkbox' />" + item + "<i class='input-helper'></i></label></div><i class='remove mdi mdi-close-circle-outline'></i></li>");
             todoListInput.val("");
         }
-
+    
     });
 
     var addItem = function(item) {
@@ -31,38 +31,21 @@
     });
 
     todoListItem.on('change', '.checkbox', function() {
-        var id = $(this).closest("li").attr('id')
-        var $self=$(this);
-        var complete=true;
-        if ($(this).attr('checked')){
-            complete=false;
+        var id = $(this).closest("li").attr('id');
+        var $self = $(this);
+        var complete = true;
+        if ($(this).attr('checked')) {
+            complete = false;
         }
-            $.ajax({
-                url:"complete-todo/"+id+"?completed="+complete,
-                type:"PUT",
-                success: function(data){
-                    if (complete){
-                        $self.attr('checked', 'checked');
-                    }else{
-                        $self.removeAttr('checked');
-                    }
-                        $self.closest("li").toggleClass('completed');
-                }
-            })
-        // var id = $(this).closest("li").attr('id')
-        // var $self=$(this);
-        // var complete=true;
-        // if ($(this).attr('checked')){
-        //     complete=false;
-        // }
-        // $.get("complete-todo/"+id+"?completed="+complete,function(data){
-        //     if (complete){
-        //         $self.attr('checked', 'checked');
-        //     }else{
-        //         $self.removeAttr('checked');
-        //     }
-        //         $self.closest("li").toggleClass('completed');
-        // })
+        $.get("complete-todo/"+id+"?complete="+complete, function(data){
+            if (complete) {
+                $self.attr('checked', 'checked');
+            } else {
+                $self.removeAttr('checked');
+            }
+    
+            $self.closest("li").toggleClass('completed');
+        })
     });
 
     todoListItem.on('click', '.remove', function() {
@@ -78,7 +61,7 @@
                 }
             }
 
-            })
+        });
             // $(this).parent().remove();
     });
 

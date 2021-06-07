@@ -9,16 +9,9 @@ type memoryHandler struct {
 	todoMap map[int]*Todo
 }
 
-type dbHandler interface {
-	getTodos() []*Todo
-	addTodo(name string) *Todo
-	removeTodo(id int) bool
-	completeTodo(id int, complete bool) bool
-}
-
 //먼저 분리하고, model.go
 
-func (m *memoryHandler) getTodos() []*Todo {
+func (m *memoryHandler) GetTodos() []*Todo {
 	list := []*Todo{} //key=id,value=Todo struct
 	for _, v := range m.todoMap {
 		list = append(list, v)
@@ -26,14 +19,14 @@ func (m *memoryHandler) getTodos() []*Todo {
 	return list
 }
 
-func (m *memoryHandler) addTodo(name string) *Todo {
+func (m *memoryHandler) AddTodo(name string) *Todo {
 	id := len(m.todoMap) + 1
 	todo := &Todo{id, name, false, time.Now()}
 	m.todoMap[id] = todo
 	return todo
 }
 
-func (m *memoryHandler) removeTodo(id int) bool {
+func (m *memoryHandler) RemoveTodo(id int) bool {
 	if _, ok := m.todoMap[id]; ok {
 		delete(m.todoMap, id)
 		log.Println("completed delete")
@@ -43,7 +36,7 @@ func (m *memoryHandler) removeTodo(id int) bool {
 	}
 
 }
-func (m *memoryHandler) completeTodo(id int, complete bool) bool {
+func (m *memoryHandler) CompleteTodo(id int, complete bool) bool {
 	if _, ok := m.todoMap[id]; ok {
 		log.Println("Success Check")
 		m.todoMap[id].Completed = complete
@@ -53,9 +46,10 @@ func (m *memoryHandler) completeTodo(id int, complete bool) bool {
 	}
 }
 
-var handler dbHandler
+func (m *memoryHandler) Close() {
 
-func newMemoryHandler() dbHandler {
+}
+func newMemoryHandler() DBHandler {
 	m := &memoryHandler{}
 	m.todoMap = make(map[int]*Todo)
 	return m
