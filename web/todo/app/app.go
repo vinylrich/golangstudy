@@ -24,13 +24,14 @@ func (a *AppHandler) indexHandler(w http.ResponseWriter, r *http.Request) {
 
 func (a *AppHandler) getTodoListHandler(w http.ResponseWriter, r *http.Request) {
 	//3Tierweb FRONT BACK DB
-
+	log.Println("Start getTodoListHandler")
 	list := a.db.GetTodos()
 	rd.JSON(w, http.StatusOK, list) //web에 반환시켜주기
 }
 
 //web 상에 저장->post불러오기
 func (a *AppHandler) addTodoHandler(w http.ResponseWriter, r *http.Request) {
+	log.Println("Start addTodoHandler")
 	name := r.FormValue("name") //formvalue가 "name"인 데이터를 받음
 	todo := a.db.AddTodo(name)
 	//저쪽 데이터에도 반영을 해줘야함
@@ -43,6 +44,7 @@ type Success struct {
 }
 
 func (a *AppHandler) removeTodoHandler(w http.ResponseWriter, r *http.Request) {
+	log.Println("Start removeTodoHandler")
 	vars := mux.Vars(r) //todos 뒤에 있는{id:[0-9]+}를 id에 저장해주는 func
 	id, _ := strconv.Atoi(vars["id"])
 	ok := a.db.RemoveTodo(id)
@@ -53,6 +55,7 @@ func (a *AppHandler) removeTodoHandler(w http.ResponseWriter, r *http.Request) {
 	}
 }
 func (a *AppHandler) completeTodoHandler(w http.ResponseWriter, r *http.Request) {
+	log.Println("Start completeTodoHandler")
 	vars := mux.Vars(r) //todos 뒤에 있는{id:[0-9]+}를 id에 저장해주는 func
 	id, _ := strconv.Atoi(vars["id"])
 	complete := r.FormValue("complete") == "true"
