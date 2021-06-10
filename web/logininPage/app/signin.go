@@ -7,6 +7,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
+	"log"
 	"net/http"
 	"os"
 	"time"
@@ -22,17 +23,11 @@ type GoogleUserId struct {
 	Picture       string `json:"picture"`
 }
 
-const (
-	redirecturl   = "http://localhost:3000/auth/google/callback"
-	EmailScopes   = "https://www.googleapis.com/auth/userinfo.email"
-	ProfileScopes = "https://www.googleapis.com/auth/userinfo.profile"
-)
-
 var googleOauthConfig = oauth2.Config{
 	RedirectURL:  "http://localhost:3000/auth/google/callback",
 	ClientID:     os.Getenv("GOOGLE_CLIENT_ID"),
 	ClientSecret: os.Getenv("GOOGLE_SECRET_KEY"),
-	Scopes:       []string{EmailScopes},
+	Scopes:       []string{"https://www.googleapis.com/auth/userinfo.email"},
 	Endpoint:     google.Endpoint,
 }
 
@@ -57,21 +52,24 @@ func googleAuthCallback(w http.ResponseWriter, r *http.Request) {
 	oauthstate, _ := r.Cookie("oauthstate")
 
 	if r.FormValue("state") != oauthstate.Value {
-		errmsg := fmt.Sprintf("invalid google oauth state cookie:%s state:%s\n", oauthstate.Value, r.FormValue("state"))
-		http.Error(w, errmsg, http.StatusInternalServerError)
+		errMsg := fmt.Sprintf("invalid google oauth state cookie:%s state:%s\n", oauthstate.Value, r.FormValue("state"))
+		log.Printf(errMsg)
+		http.Error(w, errMsg, http.StatusInternalServerError)
 		return
 	}
 
 	data, err := getGoogleUserInfo(r.FormValue("code"))
 	if err != nil {
+		log.Println(err.Error())
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
-	//Id session에 저장
 
+	// Store Id info into Session cookie
 	var userInfo GoogleUserId
 	err = json.Unmarshal(data, &userInfo)
 	if err != nil {
+		log.Println(err.Error())
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
@@ -80,9 +78,9 @@ func googleAuthCallback(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
+
 	// Set some session values.
 	session.Values["id"] = userInfo.ID
-	session.Values["email"] = userInfo.Email
 	// Save it before we write to the response/return from the handler.
 	err = session.Save(r, w)
 	if err != nil {
@@ -105,5 +103,5 @@ func getGoogleUserInfo(code string) ([]byte, error) {
 		return nil, fmt.Errorf("Failed to Get UserInfo %s\n", err.Error())
 	}
 
-	return ioutil.ReadAll(resp.Body) //body에 있는 json 포멧을 받아오는 메서드
+	return ioutil.ReadAll(resp.Body)
 }
